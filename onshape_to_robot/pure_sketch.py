@@ -10,7 +10,7 @@ def main():
     load_dotenv(find_dotenv(usecwd=True))
 
     if len(sys.argv) < 2:
-        print("Usage: onshape-to-robot-pure-shape {STL file} [prefix=PureShapes]")
+        print("Usage: onshape-to-robot-pure-sketch {STL file} [prefix=PureShapes]")
     else:
         fileName = sys.argv[1]
         robotDir = os.path.dirname(fileName)
