@@ -5,20 +5,28 @@ def main():
     import os
     import argparse
     from dotenv import load_dotenv, find_dotenv
-    from colorama import Fore, Back, Style
+    from colorama import Fore, Style
 
     load_dotenv(find_dotenv(usecwd=True))
 
     parser = argparse.ArgumentParser(
-                    prog='Pure Sketch Extractor',
-                    description='extracts pure sketches from Onshape'
-                    )
-    
-    parser.add_argument('file', type=str, help='STL file to process')
-    parser.add_argument('--prefix', type=str, default='PureShapes', help='Prefix for pure shape sketches (default: PureShapes)')
-    parser.add_argument('--config', type=str, help='Configuration file location (default: looks for config.json in the part folder or its parent folder)')
+        prog="Pure Sketch Extractor", description="extracts pure sketches from Onshape"
+    )
+
+    parser.add_argument("file", type=str, help="STL file to process")
+    parser.add_argument(
+        "--prefix",
+        type=str,
+        default="PureShapes",
+        help="Prefix for pure shape sketches (default: PureShapes)",
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        help="Configuration file location (default: looks for config.json in the part folder or its parent folder)",
+    )
     args = parser.parse_args()
-    
+
     fileName = args.file
     prefix = args.prefix
     if args.config:
@@ -27,12 +35,9 @@ def main():
         robotDir = os.path.dirname(fileName)
         configFile = os.path.join(robotDir, "config.json")
         if os.path.exists(configFile) == False:
-            configFile = os.path.join(
-                robotDir, "..", "config.json"
-            )
+            configFile = os.path.join(robotDir, "..", "config.json")
             if os.path.exists(configFile) == False:
                 raise Exception(f"ERROR: The config file {configFile} can't be found")
-            
 
     from .onshape_api.client import Client
 
@@ -157,9 +162,7 @@ def main():
             stream.write(scad)
 
         directory = os.path.dirname(fileName)
-        os.system(
-            "cd " + directory + "; openscad " + os.path.basename(scadFileName)
-        )
+        os.system("cd " + directory + "; openscad " + os.path.basename(scadFileName))
     else:
         print(
             Fore.RED
