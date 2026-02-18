@@ -54,6 +54,7 @@ class ProcessorMergeParts(Processor):
     def merge_parts(self, link: Link):
         print(info(f"+ Merging parts for {link.name}"))
 
+
         merge_everything = (
             self.merge_stls != "collision" and self.merge_stls != "visual"
         )
@@ -63,16 +64,19 @@ class ProcessorMergeParts(Processor):
         T_world_com = np.eye(4)
         T_world_com[:3, 3] = com
 
-        # Computing a new color, weighting by masses
-        color = np.zeros(4)
-        total_mass = 0
-        for part in link.parts:
-            if len(part.meshes):
-                meshes_color = np.mean([mesh.color for mesh in part.meshes], axis=0)
-                color += meshes_color * part.mass
-            total_mass += part.mass
+        if self.config.color is not None:
+            color = np.array(self.config.color)
+        else:
+            # Computing a new color, weighting by masses
+            color = np.zeros(4)
+            total_mass = 0
+            for part in link.parts:
+                if len(part.meshes):
+                    meshes_color = np.mean([mesh.color for mesh in part.meshes], axis=0)
+                    color += meshes_color * part.mass
+                total_mass += part.mass
 
-        color /= total_mass
+            color /= total_mass
 
         # Changing shapes frame
         merged_shapes = []
