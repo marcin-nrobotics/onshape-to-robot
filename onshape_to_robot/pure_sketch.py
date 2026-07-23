@@ -161,8 +161,8 @@ def main():
         with open(scadFileName, "w", encoding="utf-8") as stream:
             stream.write(scad)
 
-        directory = os.path.dirname(fileName)
-        os.system("cd " + directory + "; openscad " + os.path.basename(scadFileName))
+        # directory = os.path.dirname(fileName)
+        # os.system("cd " + directory + "; openscad " + os.path.basename(scadFileName))
     else:
         print(
             Fore.RED
